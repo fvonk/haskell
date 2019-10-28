@@ -1,6 +1,21 @@
 --hello.hs my first Haskell-file!
 -- main = do
 
+makeChange x y = (\x -> if x > 0 then x else 0)
+                 (x-y)
+
+counter x = let x = x + 1
+            in
+              let x = x + 1
+              in
+                x
+
+cube = (\x -> x^3)
+
+counterLambda x = (\x -> (\x -> x+1) x+1) x
+
+doubelL x = (\y -> y*2) x*2
+
 doubleDouble x = dubs*2
   where dubs = x*2
 
