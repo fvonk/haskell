@@ -11,6 +11,10 @@ myTail (_:xs) = xs
 
 --
 
-myGCD a b = case a `mod` b of
-  0 -> b
-  _ -> myGCD b (a `mod` b)
+-- myGCD a b = case a `mod` b of
+--   0 -> b
+--   _ -> myGCD b (a `mod` b)
+
+myGCD a 0 = a
+myGCD a b = myGCD b (a `mod` b)
+--
