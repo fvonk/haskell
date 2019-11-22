@@ -23,17 +23,17 @@ instance Ord Name where
 
 class (Eq a, Enum a) => Die a where
   roll :: Int -> a
-  getFirst :: () -> a
+  getFirst :: a
 
 data FiveSidedDie = Side1 | Side2 | Side3 | Side4 | Side5 deriving (Show, Eq, Enum)
 instance Die FiveSidedDie where
   roll n = toEnum (n `mod` 5)
-  getFirst _ = Side1
+  getFirst = Side1
 
 data SixSidedDie = S1 | S2 | S3 | S4 | S5 | S6 deriving (Show, Enum, Eq, Ord)
 instance Die SixSidedDie where
   roll n = toEnum (n `mod` 6)
-  getFirst _ = S1
+  getFirst = S1
 
 -- instance Enum SixSidedDie where
 --   toEnum 0 = S1
