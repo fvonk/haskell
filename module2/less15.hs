@@ -1,8 +1,34 @@
+-- PRNG
+
+prng :: Int -> Int -> Int -> Int -> Int
+prng a b maxNumber seed = (a * seed + b) `mod` maxNumber
+
+examplePRNG :: Int -> Int
+examplePRNG = prng 1337 7 100
+
 -- Cipher
 
 class Cipher a where
   encode :: a -> String -> String
   decode :: a -> String -> String
+
+data StreamCipher = SC
+instance Cipher StreamCipher where
+  encode SC text = map bitsToChar xorBits
+    where size = length text
+          textBits = map charToBits text
+          padBits = prngBits size
+          xorBits = map (\pair -> (fst pair) `xor` (snd pair)) (zip padBits textBits)
+  decode SC text = map bitsToChar xorBits
+    where size = length text
+          textBits = map charToBits text
+          padBits = prngBits size
+          xorBits = map (\pair -> (fst pair) `xor` (snd pair)) (zip padBits textBits)
+
+prngBits :: Int -> [Bits]
+prngBits 1 = [intToBits (examplePRNG 1)]
+prngBits size = intToBits (examplePRNG size) : prngBits (size - 1)
+
 
 data Rot = Rot
 instance Cipher Rot where
