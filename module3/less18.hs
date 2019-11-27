@@ -1,4 +1,37 @@
 import qualified Data.Map as Map
+import Data.Maybe
+
+--  less18
+
+possibleDrawers :: [Int]
+possibleDrawers = [1 .. 50]
+
+getDrawerContents :: [Int] -> Map.Map Int Organ -> [Maybe Organ]
+getDrawerContents ids catalog = map getContents ids
+  where
+    getContents = \id -> Map.lookup id catalog
+
+emptyDrawers :: [Maybe Organ] -> Int
+emptyDrawers mOrgans = (length . filter isNothing) mOrgans
+
+maybeMap2 :: (Maybe a -> Maybe b) -> [Maybe a] -> [Maybe b]
+maybeMap2 _ [] = []
+maybeMap2 func (x:xs) = (func x) : maybeMap2 func xs
+
+maybeMap :: (a -> b) -> Maybe a -> Maybe b
+maybeMap _ Nothing = Nothing
+maybeMap func (Just a) = Just (func a)
+
+numOrZero :: Maybe Int -> Int
+numOrZero Nothing = 0
+numOrZero (Just number) = number
+
+
+
+
+
+--  less18
+
 
 data Organ = Heart | Brain | Kindey | Spleen | Finger deriving (Ord, Eq, Enum, Show)
 organs = [Heart, Heart, Brain, Kindey, Spleen, Spleen, Spleen, Spleen, Brain, Kindey]
