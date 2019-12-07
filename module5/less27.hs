@@ -23,16 +23,34 @@ leftArmIO :: IO RobotPart
 leftArmIO = return leftArm
 
 
+-- main :: IO ()
+-- main = do
+--   putStrLn "Enter Id"
+--   partNo <- getLine
+--   let part = Map.lookup (read partNo) partsDB
+--   printCost (cost <$> part)
 main :: IO ()
 main = do
-  putStrLn "Enter Id"
-  partNo <- getLine
-  let part = Map.lookup (read partNo) partsDB
-  printCost (cost <$> part)
+  id1 <- readInt
+  id2 <- readInt
+  let r1 = Map.lookup id1 robotPartsDB
+  let r2 = Map.lookup id2 robotPartsDB
+  printCost (minCost r1 r2)
+--
+--
+minCost :: Maybe RobotPart -> Maybe RobotPart -> Maybe Double
+minCost p1 p2 = min <$> (cost <$> p1) <*> (cost <$> p2)
+
+readInt :: IO Int
+readInt = read <$> getLine
+
+robotPartsDB :: Map.Map Int RobotPart
+robotPartsDB = Map.fromList $ zip [1 .. 3] [leftArm, rightArm, robotHead]
+
 
 printCost :: Maybe Double -> IO ()
 printCost Nothing = putStrLn "not found"
-printCost (Just val) = putStrLn ("cost is " ++ (show val))
+printCost (Just val) = print val
 
 whatCost :: Int -> Maybe Double
 whatCost idd = cost <$> Map.lookup idd partsDB
@@ -43,6 +61,9 @@ whatCost idd = cost <$> Map.lookup idd partsDB
 
 partVal :: Maybe RobotPart
 partVal = Map.lookup 1 partsDB
+
+partVal2 :: Maybe RobotPart
+partVal2 = Map.lookup 2 partsDB
 
 allParts :: [RobotPart]
 allParts = snd <$> Map.toList partsDB
